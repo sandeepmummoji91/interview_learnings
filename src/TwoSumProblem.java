@@ -2,19 +2,24 @@ import java.util.*;
 
 public class TwoSumProblem {
 
-    static int[] numbersArray = {2, 4, 1, 5, 9, 6, 3};
-    static Map<Integer, Integer> result = new HashMap<>();
+    Map<Integer, Integer> storage = new HashMap<>();
+    Map<Integer, Integer> result = new HashMap<>();
 
-    public static void main(String[] args) {
-        int target = 7;
-        Map<Integer, Integer> storage = new HashMap<>();
+    public Map<Integer, Integer> getAll(int[] numbersArray, int target) {
         for (int i = 0; i < numbersArray.length; i++) {
             if (storage.containsKey(target - numbersArray[i])) {
-                result.put(numbersArray[i], numbersArray[storage.get(target - numbersArray[i])]); // Gives values
+                // result.put(i, storage.get(target - numbersArray[i])); // returns indexes
+                result.put(numbersArray[i], numbersArray[storage.get(target - numbersArray[i])]); // returns values
             }
             storage.put(numbersArray[i], i);
         }
-        result.entrySet().forEach(System.out::println);
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] problemArray = {3, 4, 1, 5, 9, 6, 2};
+        TwoSumProblem ts = new TwoSumProblem();
+        ts.getAll(problemArray, 7).entrySet().forEach(System.out::println);
     }
 
 }
