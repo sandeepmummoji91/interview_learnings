@@ -20,6 +20,13 @@ public class SinglyLinkedList {
         System.out.println("=========After adding nodes at the end=============");
         singlyLinkedList.printList();
         System.out.println();
+        System.out.println("=========After reversing the linked list=============");
+        singlyLinkedList.reverseList();
+        singlyLinkedList.printList();
+        System.out.println();
+        int nthElement = singlyLinkedList.findNthElement(3);
+        System.out.println("Nth element in the list is:: " + nthElement);
+        System.out.println();
         singlyLinkedList.deleteFirstNode();
         singlyLinkedList.deleteFirstNode();
         System.out.println("=========After deleting node at the beginning=============");
@@ -32,7 +39,13 @@ public class SinglyLinkedList {
         System.out.println();
         singlyLinkedList.addNodeAtIndex(1, 1);
         singlyLinkedList.addNodeAtIndex(2, 2);
+        singlyLinkedList.addNodeAtIndex(2, 3);
+        singlyLinkedList.addNodeAtIndex(2, 4);
         System.out.println("=========After adding node at the index=============");
+        singlyLinkedList.printList();
+        System.out.println();
+        singlyLinkedList.removeDuplicates();
+        System.out.println("=========After removing duplicates from the list=============");
         singlyLinkedList.printList();
         System.out.println();
     }
@@ -52,13 +65,13 @@ public class SinglyLinkedList {
      * Adds nodes at the beginning
      */
     private void addNodeAtTheBeginning(int data) {
+        ListNode newNode = new ListNode(data);
         if (head == null) {
-            head = new ListNode(data);
+            head = newNode;
             return;
         }
-        ListNode current = new ListNode(data);
-        current.next = head;
-        head = current;
+        newNode.next = head;
+        head = newNode;
     }
 
     /**
@@ -87,13 +100,28 @@ public class SinglyLinkedList {
             return;
         }
         int count = 0;
-        ListNode previous = head;
+        ListNode current = head;
         while (count < index - 1) {
             count++;
-            previous = previous.next;
+            current = current.next;
         }
-        newNode.next = previous.next;
-        previous.next = newNode;
+        newNode.next = current.next;
+        current.next = newNode;
+    }
+
+    /**
+     * Reverse linkedlist
+     */
+    private void reverseList() {
+        ListNode current = head;
+        ListNode next, previous = null;
+        while (current != null) {
+            next = current.next;
+            current.next = previous;
+            previous = current;
+            current = next;
+        }
+        head = previous;
     }
 
     /**
@@ -138,6 +166,40 @@ public class SinglyLinkedList {
         }
         System.out.println();
         System.out.println("Number of nodes in the list are:: " + count);
+    }
+
+    /**
+     * Find nth element in the list
+     */
+    private int findNthElement(int index) {
+        if (head == null)
+            return 0;
+        ListNode pointer1 = head;
+        ListNode pointer2 = head;
+        int count = 0;
+        while (count < index) {
+            pointer1 = pointer1.next;
+            count++;
+        }
+        while (pointer1.next != null) {
+            pointer1 = pointer1.next;
+            pointer2 = pointer2.next;
+        }
+        return pointer2.data;
+    }
+
+    /**
+     * Removes duplicates from the sorted list
+     */
+    private void removeDuplicates() {
+        ListNode current = head;
+        while (current != null && current.next != null) {
+            if (current.data == current.next.data) {
+                current.next = current.next.next;
+            } else {
+                current = current.next;
+            }
+        }
     }
 
     public static class ListNode {
